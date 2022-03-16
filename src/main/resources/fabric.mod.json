@@ -8,11 +8,17 @@
   "authors": [
     "Runemoro"
   ],
+  "contributors": [
+    "BoogieMonster1O1",
+    "Rooftop Joe",
+    "ZombieHDGaming"
+  ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/vanillafix",
     "sources": "https://github.com/DimensionalDevelopment/VanillaFix",
     "issues": "https://github.com/DimensionalDevelopment/VanillaFix/issues",
-    "irc": "irc://irc.esper.net:6667/dimensional-development"
+    "irc": "irc://irc.esper.net:6667/dimensional-development",
+    "discord": "https://discord.gg/Z2EsuxJ"
   },
 
   "icon": "assets/logo.png",

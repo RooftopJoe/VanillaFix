@@ -1,105 +1,74 @@
-buildscript {
-	repositories {
-		jcenter()
-		maven {
-			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
-		}
-	}
-	dependencies {
-		classpath 'net.fabricmc:fabric-loom:0.6-SNAPSHOT'
-		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-	}
+plugins {
+	id 'fabric-loom' version '0.11-SNAPSHOT'
+	id 'maven-publish'
 }
 
-apply plugin: 'fabric-loom'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = computeVersion(project.mod_version)
+version = project.mod_version
 group = project.maven_group
 
-static def computeVersion(String version) {
-	if (version.contains("beta")) {
-		return version + "-" + Calendar.getInstance().getTime().format("dd-MM-yyyy")
-	}
-	return version
-}
-
 repositories {
-	mavenCentral()
-	maven { url "https://dl.bintray.com/shedaniel/shedaniel-mods" }
+        maven { url "https://api.modrinth.com/maven" }
+	maven { url "https://maven.shedaniel.me" }
+	maven { url "https://maven.terraformersmc.com" }
 	maven { url 'https://jitpack.io' }
-	jcenter()
 }
 
-minecraft {
-	accessWidener 'src/main/resources/vanillafix_aw.txt'
+loom {
+	accessWidenerPath = file("src/main/resources/vanillafix_aw.txt")
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.5"
-	mappings "net.fabricmc:yarn:1.16.5+build.3:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.11.1"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.30.0+1.16"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Cos why not
-	modImplementation "com.github.Chocohead:Fabric-ASM:v2.1"
-	include "com.github.Chocohead:Fabric-ASM:v2.1"
+	modImplementation "com.github.Chocohead:Fabric-ASM:v${project.fabric_asm_version}"
+	include "com.github.Chocohead:Fabric-ASM:v${project.fabric_asm_version}"
 
 	// Compatibility
-	modImplementation 'com.github.jellysquid3:lithium-fabric:5c9712e'
-	modImplementation 'com.github.jellysquid3:phosphor-fabric:4c43554'
+	modImplementation "maven.modrinth:lithium:mc${project.minecraft_version}-${project.lithium_version}"
+	modImplementation "maven.modrinth:phosphor:mc1.18.x-${project.phosphor_version}"
 
 	// Fun
-	modRuntime ('me.shedaniel:RoughlyEnoughItems:5.6.1')  {
-		exclude module: 'fabric-api'
-	}
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
-	modImplementation ('me.shedaniel.cloth:config-2:4.8.2') {
-		exclude module: 'fabric-api'
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
 	}
-	include 'me.shedaniel.cloth:config-2:4.8.2'
-	modImplementation include('me.sargunvohra.mcmods:autoconfig1u:3.3.1')
 
 	// Accessing the config
-	modImplementation('io.github.prospector:modmenu:1.14.6+build.31') {
-		exclude module: 'fabric-api'
-	}
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
 	inputs.property "version", project.version
 
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
+	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
-	}
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+	it.options.release = 17
 }
 
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = "sources"
-	from sourceSets.main.allSource
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-	from "LICENSE"
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
 }
 
