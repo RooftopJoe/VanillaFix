@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.gen.PhantomSpawner;
+import net.minecraft.world.spawner.PhantomSpawner;
 
 /**
  * Adds a physical mob cap to phantoms.
