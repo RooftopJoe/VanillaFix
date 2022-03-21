@@ -15,7 +15,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.BuiltinBiomes;
-import net.minecraft.world.biome.DefaultBiomeCreator;
+import net.minecraft.world.biome.OverworldBiomeCreator;
 
 @MixinConfigValue(category = "bugFixes", value = "fixStoneShoreColors")
 @Mixin(BuiltinBiomes.class)
@@ -33,7 +33,7 @@ public class BuiltinBiomesMixin {
 	@Inject(method = "register", at = @At("HEAD"), cancellable = true)
 	private static void interceptRegister(int rawId, RegistryKey<Biome> registryKey, Biome biome, CallbackInfoReturnable<Biome> cir) {
 		if (registryKey.equals(BiomeKeys.STONE_SHORE)) {
-			cir.setReturnValue(registerUnsafely(rawId, registryKey, DefaultBiomeCreator.createBeach(0.1F, 0.8F, 0.2F, 0.3F, 0x3d57d6, false, true)));
+			cir.setReturnValue(registerUnsafely(rawId, registryKey, OverworldBiomeCreator.createBeach(0.1F, 0.8F, 0.2F, 0.3F, 0x3d57d6, false, true)));
 		}
 	}
 

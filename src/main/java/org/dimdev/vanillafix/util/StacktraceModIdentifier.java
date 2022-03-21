@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.launch.knot.Knot;
+import net.fabricmc.loader.launch.knot.KnotServer;
 
 public class StacktraceModIdentifier {
 	private static final Logger LOGGER = LogManager.getLogger();
