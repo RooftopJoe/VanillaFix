@@ -39,7 +39,7 @@ public class BlockModelRendererMixin {
 		markQuads(quads);
 	}
 
-	@Inject(method = "renderQuad(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;FFFLjava/util/List;II)V", at = @At("HEAD"))
+	@Inject(method = "renderQuads(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;FFFLjava/util/List;II)V", at = @At("HEAD"))
 	private static void onRenderQuads(MatrixStack.Entry entry, VertexConsumer vertexConsumer, float f, float g, float h, List<BakedQuad> quads, int i, int j, CallbackInfo ci) {
 		markQuads(quads);
 	}
