@@ -2,7 +2,7 @@
   "package": "org.dimdev.vanillafix.textures.mixins",
   "required": true,
   "minVersion": "0.8",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "client": [
     "BakedQuadAccessor",
     "BlockModelRendererMixin",
