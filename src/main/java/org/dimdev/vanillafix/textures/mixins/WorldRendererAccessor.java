@@ -1,6 +1,6 @@
 package org.dimdev.vanillafix.textures.mixins;
 
-import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -12,6 +12,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(WorldRenderer.class)
 public interface WorldRendererAccessor {
-	@Accessor("visibleChunks")
-	ObjectList<?> getVisibleChunks();
+	@Accessor("chunkInfos")
+	ObjectArrayList<?> getVisibleChunks();
 }
