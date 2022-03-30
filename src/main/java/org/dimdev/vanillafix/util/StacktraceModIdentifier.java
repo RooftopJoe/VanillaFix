@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.launch.knot.KnotServer;
+import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 
 public class StacktraceModIdentifier {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -56,7 +56,7 @@ public class StacktraceModIdentifier {
 		}
 
 		// Get the URL of the class
-		URL url = Knot.getLauncher().getTargetClassLoader().getResource(className.replace('.', '/') + ".class");
+		URL url = FabricLauncherBase.getLauncher().getTargetClassLoader().getResource(className.replace('.', '/') + ".class");
 		LOGGER.debug(className + " = " + className + " = " + url);
 		if (url == null) {
 			LOGGER.warn("Failed to identify " + className);
